@@ -7,7 +7,7 @@ let currentIndex = 0;
 let candles = [];
 
 document.addEventListener("DOMContentLoaded", () => {
-  fetch('/tradingview/data/sample_data.json')
+  fetch('https://raw.githubusercontent.com/dharawaparmar/tradingview/main/sample_data.json')
     .then(response => response.json())
     .then(data => {
       candles = data;
