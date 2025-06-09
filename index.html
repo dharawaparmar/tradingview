@@ -2,49 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nifty50 Paper Trading Simulator</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
-  <div class="chart-container">
-    <div class="tradingview-widget-container">
-      <div class="tradingview-widget-container__widget"></div>
-      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-      {
-        "autosize": true,
-        "symbol": "NSE:NIFTY",
-        "timezone": "Asia/Kolkata",
-        "theme": "light",
-        "style": "1",
-        "locale": "en",
-        "withdateranges": true,
-        "range": "1M",
-        "hide_side_toolbar": false,
-        "allow_symbol_change": true,
-        "details": true,
-        "studies": ["MACD@tv-basicstudies", "RSI@tv-basicstudies"],
-        "support_host": "https://www.tradingview.com"
-      }
-      </script>
-    </div>
-  </div>
+  <h1>📈 Nifty50 Paper Trading Replay & Practice</h1>
+  <div id="chart" class="chart-area"></div>
 
-  <div class="bottom-panel">
-    <p>💰 Wallet Balance: ₹<span id="wallet">100000</span></p>
-    Qty: <input type="number" id="qty" value="1" min="1" />
+  <div class="controls">
+    <label>📅 Start From:
+      <input type="datetime-local" id="startTime" />
+    </label>
+    <label>Qty:
+      <input type="number" id="qty" value="1" min="1" />
+    </label>
+    <button onclick="startReplay()">▶️ Start Replay</button>
     <button onclick="buy()">🟢 Buy</button>
     <button onclick="sell()">🔴 Sell</button>
-    <button onclick="preview()">⏯️ Preview</button>
-    <p>LTP: ₹<span id="ltp">-</span></p>
-
-    <table>
-      <thead>
-        <tr><th>Type</th><th>Qty</th><th>Price</th><th>P/L</th></tr>
-      </thead>
-      <tbody id="trades"></tbody>
-    </table>
+    <div class="wallet">💰 Wallet: ₹<span id="wallet">100000</span></div>
+    <div>LTP: ₹<span id="ltp">-</span></div>
   </div>
+
+  <table>
+    <thead>
+      <tr><th>Type</th><th>Qty</th><th>Price</th><th>P/L</th></tr>
+    </thead>
+    <tbody id="trades"></tbody>
+  </table>
 
   <script src="chart.js"></script>
 </body>
