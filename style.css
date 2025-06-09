@@ -1,7 +1,41 @@
-body { font-family: sans-serif; padding: 20px; background: #f8f8f8; }
-h1 { text-align: center; }
-.wallet-panel { margin-top: 20px; padding: 10px; background: #fff; border-radius: 5px; }
-button { margin: 0 5px; padding: 5px 10px; }
-table { border-collapse: collapse; margin-top: 20px; width: 100%; background: #fff; }
-th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-.ltp { margin: 10px 0; font-weight: bold; }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+}
+.chart-container {
+  height: 80vh;
+  width: 100%;
+}
+.tradingview-widget-container {
+  height: 100%;
+  width: 100%;
+}
+.bottom-panel {
+  height: 20vh;
+  padding: 10px;
+  background: #ffffff;
+  overflow: auto;
+  border-top: 2px solid #ddd;
+}
+button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  font-size: 1em;
+}
+input {
+  font-size: 1em;
+  padding: 4px;
+}
+table {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: center;
+}
