@@ -1,9 +1,12 @@
 let wallet = 100000;
 let trades = [];
 let ltp = 22500 + Math.random() * 100;
-let index = 0;
+let previewing = false;
+let previewInterval = null;
 
-document.getElementById("ltp").innerText = ltp.toFixed(2);
+function updateLTP() {
+  document.getElementById("ltp").innerText = ltp.toFixed(2);
+}
 
 function updateWallet() {
   document.getElementById("wallet").innerText = wallet.toFixed(2);
@@ -12,17 +15,19 @@ function updateWallet() {
 function buy() {
   const qty = parseInt(document.getElementById("qty").value);
   if (wallet >= ltp * qty) {
-    trades.push({ type: "Buy", qty, price: ltp });
     wallet -= ltp * qty;
+    trades.push({ type: "Buy", qty, price: ltp });
     updateWallet();
     renderTrades();
+  } else {
+    alert("Insufficient Balance!");
   }
 }
 
 function sell() {
   const qty = parseInt(document.getElementById("qty").value);
-  trades.push({ type: "Sell", qty, price: ltp });
   wallet += ltp * qty;
+  trades.push({ type: "Sell", qty, price: ltp });
   updateWallet();
   renderTrades();
 }
@@ -38,8 +43,17 @@ function renderTrades() {
 }
 
 function preview() {
-  setInterval(() => {
-    ltp += (Math.random() - 0.5) * 50;
-    document.getElementById("ltp").innerText = ltp.toFixed(2);
-  }, 1000);
+  if (previewing) {
+    clearInterval(previewInterval);
+    previewing = false;
+  } else {
+    previewInterval = setInterval(() => {
+      ltp += (Math.random() - 0.5) * 50;
+      updateLTP();
+    }, 1000);
+    previewing = true;
+  }
 }
+
+updateLTP();
+updateWallet();
