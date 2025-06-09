@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nifty50 Paper Trading Simulator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>📈 Nifty50 Paper Trading Simulator</h1>
+  <div class="tradingview-widget-container" style="height:500px;width:100%">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+    {
+      "autosize": true,
+      "symbol": "NSE:NIFTY",
+      "timezone": "Asia/Kolkata",
+      "theme": "light",
+      "style": "1",
+      "locale": "en",
+      "withdateranges": true,
+      "range": "1M",
+      "hide_side_toolbar": false,
+      "allow_symbol_change": true,
+      "details": true,
+      "studies": ["MACD@tv-basicstudies", "RSI@tv-basicstudies"],
+      "show_popup_button": true,
+      "popup_width": "1000",
+      "popup_height": "650",
+      "support_host": "https://www.tradingview.com"
+    }
+    </script>
+  </div>
+
+  <div class="wallet-panel">
+    <p>💰 Wallet Balance: ₹<span id="wallet">100000</span></p>
+    Qty: <input type="number" id="qty" value="1" min="1" />
+    <button onclick="buy()">🟢 Buy</button>
+    <button onclick="sell()">🔴 Sell</button>
+    <button onclick="preview()">⏯️ Preview</button>
+    <p>LTP: ₹<span id="ltp">-</span></p>
+  </div>
+
+  <table>
+    <thead><tr><th>Type</th><th>Qty</th><th>Price</th><th>P/L</th></tr></thead>
+    <tbody id="trades"></tbody>
+  </table>
+
+  <script src="chart.js"></script>
+</body>
+</html>
