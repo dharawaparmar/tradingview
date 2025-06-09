@@ -1,36 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nifty50 Paper Trading Simulator</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Paper Trading Simulator</title>
+<link rel="stylesheet" href="style.css" />
+<script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
-  <h1>📈 Nifty50 Paper Trading Replay & Practice</h1>
-  <div id="chart" class="chart-area"></div>
+  <div class="container">
+    <h1>📈 Paper Trading Simulator (NSE Nifty)</h1>
+    <div id="chart" class="chart"></div>
 
-  <div class="controls">
-    <label>📅 Start From:
-      <input type="datetime-local" id="startTime" />
-    </label>
-    <label>Qty:
-      <input type="number" id="qty" value="1" min="1" />
-    </label>
-    <button onclick="startReplay()">▶️ Start Replay</button>
-    <button onclick="buy()">🟢 Buy</button>
-    <button onclick="sell()">🔴 Sell</button>
-    <div class="wallet">💰 Wallet: ₹<span id="wallet">100000</span></div>
-    <div>LTP: ₹<span id="ltp">-</span></div>
+    <div class="controls">
+      <label>📅 Start From: <input type="datetime-local" id="startTime" /></label>
+      <label>Qty: <input type="number" id="qty" value="1" /></label>
+      <button onclick="startReplay()">▶️ Start Replay</button>
+      <button onclick="pauseReplay()">⏸️ Pause</button>
+      <button onclick="buy()">🟢 Buy</button>
+      <button onclick="sell()">🔴 Sell</button>
+      <div class="wallet">💰 Wallet: ₹<span id="wallet">100000</span></div>
+      <div class="ltp">LTP: ₹<span id="ltp">-</span></div>
+    </div>
+
+    <table>
+      <thead><tr><th>#</th><th>Type</th><th>Qty</th><th>Price</th><th>Time</th><th>P/L</th></tr></thead>
+      <tbody id="trades"></tbody>
+    </table>
   </div>
-
-  <table>
-    <thead>
-      <tr><th>Type</th><th>Qty</th><th>Price</th><th>P/L</th></tr>
-    </thead>
-    <tbody id="trades"></tbody>
-  </table>
 
   <script src="chart.js"></script>
 </body>
