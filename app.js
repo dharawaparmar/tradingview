@@ -1,53 +1,39 @@
-let chart = LightweightCharts.createChart(document.getElementById("chart"), {
-  width: document.getElementById("chart").clientWidth,
-  height: 400,
-  layout: { backgroundColor: '#ffffff', textColor: '#000' },
-  timeScale: { timeVisible: true, secondsVisible: false },
-});
-let candleSeries = chart.addCandlestickSeries();
 
-let candles = [];
-let currentIndex = 0;
-let replayTimer = null;
-let trades = [];
 let wallet = 100000;
+let trades = [];
+let widget;
+let currentPrice = 0;
 
-function fetchData(symbol, callback) {
-  // For demo use mock JSON; replace this with Yahoo API if desired.
-  fetch(`data/${symbol}.json`)
-    .then(res => res.json())
-    .then(data => callback(data))
-    .catch(() => alert("Failed to load symbol data."));
-}
+function loadChart() {
+  const symbol = document.getElementById("symbol").value.toUpperCase();
+  if (!symbol) return alert("Please enter a symbol.");
 
-function startReplay() {
-  const symbol = document.getElementById("symbol").value;
-  const tf = document.getElementById("timeframe").value;
-  const dt = new Date(document.getElementById("startTime").value).getTime() / 1000;
+  document.getElementById("chart-container").innerHTML = "";
 
-  fetchData(symbol, (data) => {
-    candles = data;
-    currentIndex = candles.findIndex(c => c.time >= dt);
-    if (currentIndex < 0) currentIndex = 0;
-    play();
+  widget = new TradingView.widget({
+    "container_id": "chart-container",
+    "autosize": true,
+    "symbol": symbol,
+    "interval": "5",
+    "timezone": "Asia/Kolkata",
+    "theme": "light",
+    "style": "1",
+    "locale": "en",
+    "toolbar_bg": "#f1f3f6",
+    "enable_publishing": false,
+    "withdateranges": true,
+    "hide_side_toolbar": false,
+    "allow_symbol_change": true,
+    "details": true,
+    "studies": ["MACD@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
   });
-}
 
-function play() {
-  if (replayTimer) clearInterval(replayTimer);
-  replayTimer = setInterval(() => {
-    if (currentIndex >= candles.length) {
-      clearInterval(replayTimer);
-      return;
-    }
-    candleSeries.setData(candles.slice(0, currentIndex + 1));
-    document.getElementById("ltp").innerText = candles[currentIndex].close.toFixed(2);
-    currentIndex++;
-  }, 1000);
-}
-
-function pauseReplay() {
-  clearInterval(replayTimer);
+  setTimeout(() => {
+    const randomLTP = 1000 + Math.random() * 1000;
+    currentPrice = randomLTP;
+    document.getElementById("ltp").innerText = currentPrice.toFixed(2);
+  }, 3000);
 }
 
 function buy() {
@@ -60,20 +46,15 @@ function sell() {
 
 function placeOrder(type) {
   const qty = parseInt(document.getElementById("qty").value);
-  const price = candles[currentIndex - 1]?.close || 0;
+  const price = currentPrice;
   if (type === "Buy" && wallet < qty * price) {
-    alert("Insufficient funds.");
+    alert("Insufficient balance.");
     return;
   }
   wallet += (type === "Sell" ? qty * price : -qty * price);
-  updateWallet();
-
-  trades.push({ type, qty, price, time: candles[currentIndex - 1]?.time });
-  renderTrades();
-}
-
-function updateWallet() {
   document.getElementById("wallet").innerText = wallet.toFixed(2);
+  trades.push({ type, qty, price });
+  renderTrades();
 }
 
 function renderTrades() {
@@ -81,12 +62,16 @@ function renderTrades() {
   tbody.innerHTML = "";
   trades.forEach((t, i) => {
     const pl = (t.type === "Sell" ? 1 : -1) * t.qty * t.price;
-    const time = new Date(t.time * 1000).toLocaleString();
-    tbody.innerHTML += `<tr>
-      <td>${i + 1}</td><td>${t.type}</td><td>${t.qty}</td>
-      <td>${t.price.toFixed(2)}</td><td>${time}</td><td>${pl.toFixed(2)}</td>
-    </tr>`;
+    tbody.innerHTML += `<tr><td>${i + 1}</td><td>${t.type}</td><td>${t.qty}</td><td>${t.price.toFixed(2)}</td><td>${pl.toFixed(2)}</td></tr>`;
   });
 }
 
-updateWallet();
+const sampleSymbols = ["RELIANCE", "TCS", "INFY", "NSE:NIFTY", "NSE:BANKNIFTY", "SBIN", "HDFCBANK", "ADANIENT"];
+document.addEventListener("DOMContentLoaded", () => {
+  const datalist = document.getElementById("symbols");
+  sampleSymbols.forEach(sym => {
+    const opt = document.createElement("option");
+    opt.value = sym;
+    datalist.appendChild(opt);
+  });
+});
